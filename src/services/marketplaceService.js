@@ -38,7 +38,7 @@ export const searchManufacturers = async (searchFilter = {}) => {
   try {
     const response = await api.post('/api/Marketplace/search', payload);
     return response.data;
-  } catch (err) {
+  } catch {
     // Fallback to getAll if search fails
     return getAllManufacturers();
   }

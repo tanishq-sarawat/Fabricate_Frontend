@@ -1,154 +1,181 @@
-import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Store, FileText, LogOut, User, Layers, ChevronLeft, ChevronRight } from 'lucide-react';
+import { NavLink, Link } from 'react-router-dom';
+import { 
+  Home,
+  Building2,
+  Folder,
+  Bot,
+  Layers,
+  Box,
+  ArrowUpRight
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-export const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
-  const { user, role, isBrand, isManufacturer, logout } = useAuth();
-  const navigate = useNavigate();
+export const Sidebar = ({ 
+  mobileOpen = false, 
+  setMobileOpen,
+  aiPanelOpen = true,
+  setAiPanelOpen
+}) => {
+  const { isBrand, isManufacturer } = useAuth();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
+  const handleNavClick = () => {
+    if (setMobileOpen) setMobileOpen(false);
   };
 
-  const menuItems = isManufacturer
-    ? [{ name: 'Sourcing & Bids', path: '/app', icon: FileText }]
-    : [
-        { name: 'Console Dashboard', path: '/app', icon: LayoutDashboard },
-        { name: 'Supplier Marketplace', path: '/app/marketplace', icon: Store },
-        { name: 'Sourcing & RFQs', path: '/app/sourcing', icon: FileText },
-      ];
+  // Only the active, used routes in Fabricate:
+  const railItems = [
+    { 
+      name: 'Console Dashboard', 
+      icon: Home, 
+      path: '/app', 
+      exact: true 
+    },
+    { 
+      name: 'Supplier Marketplace', 
+      icon: Building2, 
+      path: '/app/marketplace',
+      hidden: !isBrand // only shown when used/available
+    },
+    { 
+      name: 'Facility Profile', 
+      icon: Building2, 
+      path: '/app/register-facility',
+      hidden: !isManufacturer
+    },
+    { 
+      name: 'Sourcing & RFQs', 
+      icon: Folder, 
+      path: '/app/sourcing' 
+    },
+    { 
+      name: 'Fabricate AI Assistant', 
+      icon: Bot, 
+      isAiToggle: true 
+    },
+    { 
+      name: 'Fabricate OS (ERP Suite)', 
+      icon: Layers, 
+      path: '/os' 
+    },
+    { 
+      name: 'Edge CRM Suite', 
+      icon: Box, 
+      path: '/edge' 
+    },
+    { 
+      name: 'Connect Supplier Network', 
+      icon: ArrowUpRight, 
+      path: '/connect' 
+    },
+  ].filter(item => !item.hidden);
+
+  const renderRail = () => (
+    <div className="flex flex-col h-full items-center py-4 select-none justify-between">
+      <div className="flex flex-col items-center w-full">
+        {/* 1. Top Logo Mark: Bold Fabricate 'f.' mark inside Keychain yellow circle */}
+        <Link 
+          to="/app" 
+          onClick={handleNavClick}
+          className="w-9 h-9 rounded-full bg-[#f5cb39] text-[#111111] flex items-center justify-center font-bold text-lg select-none mb-4 shadow-2xs hover:scale-105 active:scale-95 transition-all group"
+          title="Fabricate"
+        >
+          <span className="font-bold text-base lowercase tracking-tighter leading-none flex items-baseline">
+            f<span className="text-[10px] leading-none text-black">.</span>
+          </span>
+        </Link>
+
+        {/* 2. Focused Navigation Stack: Only active, functional routes */}
+        <nav className="flex flex-col items-center space-y-2 w-full">
+          {railItems.map((item, idx) => {
+            const Icon = item.icon;
+
+            // AI Assistant toggle item (Solid yellow pill matching screenshot)
+            if (item.isAiToggle) {
+              return (
+                <div key={item.name + idx} className="relative group">
+                  <button
+                    type="button"
+                    onClick={() => setAiPanelOpen && setAiPanelOpen(prev => !prev)}
+                    className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                      aiPanelOpen 
+                        ? 'bg-[#f5cb39] text-[#111111] shadow-xs' 
+                        : 'text-[#888880] hover:text-[#111111] hover:bg-[#f4f4f2]'
+                    }`}
+                    title={item.name}
+                  >
+                    <Icon size={18} strokeWidth={2} />
+                  </button>
+
+                  {/* Floating Tooltip */}
+                  <div className="absolute left-12 top-1/2 -translate-y-1/2 hidden group-hover:flex items-center z-50 pointer-events-none">
+                    <div className="bg-[#111111] text-white text-[11px] font-medium px-2.5 py-1 rounded-md shadow-lg whitespace-nowrap">
+                      {item.name}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <div key={item.name + idx} className="relative group">
+                <NavLink
+                  to={item.path}
+                  end={item.exact}
+                  onClick={handleNavClick}
+                  className={({ isActive }) =>
+                    `w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                      isActive && !aiPanelOpen
+                        ? 'bg-[#f5cb39] text-[#111111] shadow-xs'
+                        : 'text-[#888880] hover:text-[#111111] hover:bg-[#f4f4f2]'
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <Icon 
+                      size={18} 
+                      strokeWidth={isActive && !aiPanelOpen ? 2.1 : 1.7}
+                      className={isActive && !aiPanelOpen ? 'text-[#111111]' : 'text-[#888880] group-hover:text-[#111111]'} 
+                    />
+                  )}
+                </NavLink>
+
+                {/* Floating Tooltip */}
+                <div className="absolute left-12 top-1/2 -translate-y-1/2 hidden group-hover:flex items-center z-50 pointer-events-none">
+                  <div className="bg-[#111111] text-white text-[11px] font-medium px-2.5 py-1 rounded-md shadow-lg whitespace-nowrap">
+                    {item.name}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* Bottom indicator */}
+      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mb-1" title="System Connected" />
+    </div>
+  );
 
   return (
-    <aside
-      className={`${
-        isCollapsed ? 'w-20' : 'w-64'
-      } border-r border-slate-200/80 bg-white flex flex-col h-screen sticky top-0 shadow-xs z-30 transition-all duration-300 ease-in-out font-sans select-none`}
-    >
-      {/* Logo Header & Collapse Toggle */}
-      <div className="h-16 flex items-center justify-between px-4 border-b border-slate-100">
-        <div className="flex items-center gap-2.5 overflow-hidden">
-          <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-xs shrink-0">
-            <Layers className="h-5 w-5" />
-          </div>
-          {!isCollapsed && (
-            <span className="font-logo text-xl font-extrabold lowercase text-slate-900 tracking-logo-tight truncate">
-              fabricate<sup className="ml-0.5 text-[10px] font-semibold text-amber-500">®</sup>
-            </span>
-          )}
-        </div>
+    <>
+      {/* Desktop Sidebar Rail: 56px wide matching screenshot */}
+      <aside className="hidden md:flex w-14 border-r border-[#e8e8e5] bg-white flex-col h-[calc(100vh-3.5rem)] shrink-0 z-20 font-sans select-none overflow-y-auto overflow-x-hidden">
+        {renderRail()}
+      </aside>
 
-        <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors border border-transparent hover:border-slate-200 cursor-pointer"
-          title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
-        >
-          {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-        </button>
-      </div>
-
-      {/* Role Banner */}
-      {!isCollapsed ? (
-        <div className="mx-4 mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5">
-          <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse shrink-0" />
-          <div className="overflow-hidden">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Workspace</span>
-            <span className="text-xs font-bold text-slate-900 truncate block">
-              {isBrand ? 'Brand Sourcing' : 'Manufacturer Bids'}
-            </span>
+      {/* Mobile Drawer */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          <div 
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
+            onClick={() => setMobileOpen(false)} 
+          />
+          <div className="relative w-16 bg-white h-full shadow-2xl flex flex-col z-10">
+            {renderRail()}
           </div>
-        </div>
-      ) : (
-        <div className="mx-auto mt-4 w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center" title={isBrand ? 'Brand Sourcing' : 'Manufacturer Bids'}>
-          <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
         </div>
       )}
-
-      {/* Navigation menu links */}
-      <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
-        {!isCollapsed && (
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-2 block">
-            Navigation
-          </span>
-        )}
-
-        {menuItems.map((item) => {
-          const Icon = item.icon;
-          return (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              end={item.path === '/app'}
-              title={isCollapsed ? item.name : undefined}
-              className={({ isActive }) =>
-                `flex items-center justify-between py-2.5 rounded-xl text-sm transition-all duration-200 ${
-                  isCollapsed ? 'px-0 justify-center' : 'px-3.5'
-                } ${
-                  isActive
-                    ? 'bg-slate-100/90 text-slate-900 font-extrabold border border-slate-200/90 shadow-2xs'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-semibold'
-                }`
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  <div className="flex items-center gap-3">
-                    <Icon size={18} className={isActive ? 'text-amber-600' : 'text-slate-400'} />
-                    {!isCollapsed && <span>{item.name}</span>}
-                  </div>
-
-                  {!isCollapsed && isActive && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
-                  )}
-                </>
-              )}
-            </NavLink>
-          );
-        })}
-      </nav>
-
-      {/* User profile & Logout */}
-      <div className="p-3 border-t border-slate-100 space-y-3 bg-slate-50/50">
-        {!isCollapsed ? (
-          <>
-            <div className="flex items-center gap-2.5 overflow-hidden px-1">
-              <div className="w-8 h-8 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center text-slate-600 shrink-0 font-bold text-xs">
-                <User size={15} />
-              </div>
-              <div className="overflow-hidden flex-1">
-                <p className="text-xs font-bold text-slate-900 truncate">{user?.email || 'User Session'}</p>
-                <span className="inline-block text-[9px] font-bold text-amber-800 bg-amber-100/80 border border-amber-200 px-1.5 py-0.2 rounded mt-0.5 uppercase tracking-wider">
-                  {role || 'BRAND'}
-                </span>
-              </div>
-            </div>
-
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 border border-rose-200 transition-colors cursor-pointer bg-white shadow-2xs"
-            >
-              <LogOut size={14} />
-              <span>Sign Out</span>
-            </button>
-          </>
-        ) : (
-          <div className="flex flex-col items-center gap-3 py-1">
-            <div className="w-8 h-8 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center text-slate-600 font-bold text-xs" title={user?.email || 'User Session'}>
-              <User size={15} />
-            </div>
-
-            <button
-              onClick={handleLogout}
-              className="p-2 rounded-xl text-rose-600 hover:bg-rose-50 border border-rose-200 transition-colors cursor-pointer bg-white shadow-2xs"
-              title="Sign Out"
-            >
-              <LogOut size={16} />
-            </button>
-          </div>
-        )}
-      </div>
-    </aside>
+    </>
   );
 };
 

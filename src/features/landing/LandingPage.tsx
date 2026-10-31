@@ -1,618 +1,455 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Search, 
-  Layers, 
-  Factory, 
   ArrowRight, 
-  CheckCircle2, 
-  Menu, 
-  X, 
-  Building2, 
-  Clock, 
   ArrowUpRight, 
-  Check, 
-  Package, 
-  Shirt, 
-  Tag, 
-  Cpu, 
-  HeartPulse, 
+  ChevronDown, 
+  ShieldCheck, 
+  Layers, 
+  Menu, 
+  X,
+  Store,
+  FileText,
+  Activity,
+  Sliders,
   Sparkles,
-  ShieldCheck
+  Search,
+  CheckCircle2,
+  Box,
+  Cpu,
+  Truck,
+  Building2,
+  Check
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
-
-interface NavItem {
-  label: string;
-  href: string;
-}
-
-const navItems: NavItem[] = [
-  { label: 'How it Works', href: '#how-it-works' },
-  { label: 'For Brands', href: '#for-brands' },
-  { label: 'For Manufacturers', href: '#for-manufacturers' },
-  { label: 'Categories', href: '#categories' },
-];
-
-interface StatItem {
-  value: string;
-  label: string;
-}
-
-const stats: StatItem[] = [
-  { value: '10,000+', label: 'Verified Manufacturers' },
-  { value: '450+', label: 'Product Categories' },
-  { value: '12-Day', label: 'Avg. Match Time' },
-];
-
-interface FeatureItem {
-  title: string;
-  description: string;
-}
-
-const brandFeatures: FeatureItem[] = [
-  { title: 'Verified facility data', description: 'Access deep insights, audit reports, and certified capabilities directly.' },
-  { title: 'Smart RFP matching', description: 'Submit specs once and receive qualified quotes from matched facilities.' },
-  { title: 'Direct communication', description: 'Message verified representatives without middleman markups.' },
-];
-
-const manufacturerFeatures: FeatureItem[] = [
-  { title: 'Fill idle capacity', description: 'Get matched with brands looking for your exact production capabilities.' },
-  { title: 'Streamlined lead qualification', description: 'Receive high-intent RFPs that fit your tooling and run sizes.' },
-  { title: 'Custom profile building', description: 'Showcase equipment, certifications, and past project galleries.' },
-];
-
-interface StepItem {
-  number: string;
-  title: string;
-  description: string;
-}
-
-const steps: StepItem[] = [
-  { number: '01', title: 'Define', description: 'Detail your product specifications, certifications, and volume needs.' },
-  { number: '02', title: 'Match', description: 'Our platform matches you with vetted manufacturers possessing the exact capabilities.' },
-  { number: '03', title: 'Produce', description: 'Compare quotes, manage communications, and begin production securely.' },
-];
-
-interface CategoryItem {
-  title: string;
-  icon: React.ComponentType<{ className?: string }>;
-  description: string;
-}
-
-const categories: CategoryItem[] = [
-  { title: 'Food & Beverage', icon: Package, description: 'Co-packers, FDA facilities, organic food processing, and custom canning.' },
-  { title: 'Apparel & Textiles', icon: Shirt, description: 'Cut & sew shops, high-volume apparel, circular knits, and techwear production.' },
-  { title: 'Cosmetics & Personal Care', icon: Sparkles, description: 'Clean beauty formulation, custom packaging, skin care labs, and GMP lines.' },
-  { title: 'Packaging & Labeling', icon: Tag, description: 'Sustainable mailers, custom folding cartons, glass bottles, and digital labeling.' },
-  { title: 'Health & Wellness', icon: HeartPulse, description: 'Nutraceuticals, vitamins, organic supplements, and ISO-certified production.' },
-  { title: 'Electronics Assembly', icon: Cpu, description: 'PCB assembly, cleanroom operations, custom IoT enclosures, and testing.' },
-];
+import { Link, useNavigate } from 'react-router-dom';
+import PublicHeader from '../../components/PublicHeader';
+import ConstellationBackground from '../../components/ConstellationBackground';
 
 export const LandingPage: React.FC = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    
-    // Check initial scroll position
-    handleScroll();
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Searching for:', searchQuery);
-  };
+  const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-amber-500 selection:text-slate-950 overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#fbfbfa] font-sans text-[#111111] selection:bg-[#f5cb39] selection:text-[#111111] relative">
       
-      {/* Background Grid Lines just like Keychain.com */}
-      <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden select-none">
-        {/* Vertical Gridlines */}
-        <div className="absolute inset-y-0 left-[16.666%] w-px bg-slate-100/60" />
-        <div className="absolute inset-y-0 left-[33.333%] w-px bg-slate-100/60 hidden sm:block" />
-        <div className="absolute inset-y-0 left-[50%] w-px bg-slate-100/60" />
-        <div className="absolute inset-y-0 left-[66.666%] w-px bg-slate-100/60 hidden sm:block" />
-        <div className="absolute inset-y-0 left-[83.333%] w-px bg-slate-100/60" />
-
-        {/* Horizontal Gridlines */}
-        <div className="absolute top-[80px] left-0 right-0 h-px bg-slate-100/60" />
-        <div className="absolute top-[280px] left-0 right-0 h-px bg-slate-100/60" />
-        <div className="absolute top-[480px] left-0 right-0 h-px bg-slate-100/60" />
-        <div className="absolute top-[680px] left-0 right-0 h-px bg-slate-100/60" />
-        <div className="absolute top-[880px] left-0 right-0 h-px bg-slate-100/60" />
-        <div className="absolute top-[1080px] left-0 right-0 h-px bg-slate-100/60" />
+      {/* 1. VISIBLE BACKGROUND LAYER: Constellation Grid Pattern + Mouse-Following Canvas */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute inset-0 keychain-network-bg opacity-75" />
+        <ConstellationBackground interactiveRadius={200} className="w-full h-full" />
       </div>
 
-      {/* Radial Gradient Glows (Just like Keychain.com) */}
-      <div className="absolute top-0 left-[5%] w-[450px] h-[450px] rounded-full bg-[radial-gradient(circle,rgba(245,158,11,0.06)_0%,transparent_75%)] pointer-events-none -z-10" />
-      <div className="absolute top-[20%] right-[-5%] w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_75%)] pointer-events-none -z-10" />
+      {/* 2. FIXED TOP NAVIGATION BAR (Matching Keychain) */}
+      <PublicHeader transparentAtTop={true} />
 
-      {/* 1. STICKY NAVIGATION BAR */}
-      <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        isScrolled || mobileMenuOpen
-          ? 'border-b border-slate-100/80 bg-white/80 backdrop-blur-md shadow-sm'
-          : 'border-b border-transparent bg-transparent'
-      }`}>
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 sm:px-8">
+      {/* 3. HERO SECTION (Foreground Layer) */}
+      <section className="relative z-10 pt-16 pb-16 md:pt-24 md:pb-24">
+        <div className="mx-auto max-w-5xl px-6 sm:px-8 text-center flex flex-col items-center">
           
-          {/* Left: Brand Logo & Icon */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
-              <Layers className="h-5 w-5" />
-            </div>
-            <Link 
-              to="/" 
-              className="group flex items-baseline font-logo text-2xl font-extrabold lowercase text-slate-900 tracking-logo-tight select-none"
-            >
-              <span>fabricate</span>
-              <sup className="ml-0.5 text-[10px] font-semibold tracking-normal text-amber-500 select-none">®</sup>
-            </Link>
+          {/* Top Live Ticker Pill (Exact Keychain Style) */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#e8e8e5] bg-white px-4 py-1.5 text-xs text-[#555555] mb-8 shadow-2xs select-none hover:border-[#d0d0ca] transition-colors">
+            <span className="w-2 h-2 rounded-full bg-[#f5cb39] animate-pulse" />
+            <span>A custom packaging manufacturer in Ohio just completed a 15,000 unit run on FabricateOS</span>
           </div>
 
-          {/* Center: Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors duration-200"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
+          {/* Main Headline */}
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-[#111111] leading-[1.08] max-w-4xl">
+            The AI Platform for CPG
+          </h1>
 
-          {/* Right: CTA Buttons */}
-          <div className="hidden md:flex items-center gap-4">
-            <Link 
-              to="/login" 
-              className="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors duration-200 px-3 py-2"
-            >
-              Log In
-            </Link>
+          {/* Subheadline */}
+          <p className="mt-6 text-base sm:text-lg md:text-xl text-[#666666] max-w-2xl leading-relaxed">
+            Powering over $10 billion in manufacturing for the world's most innovative brands and certified facilities.
+          </p>
+
+          {/* Action Buttons */}
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
             <Link 
               to="/register" 
-              className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/10 active:scale-95 transition-all duration-150"
+              className="btn-keychain-primary text-base px-7 py-3 w-full sm:w-auto text-center"
             >
-              Join as Manufacturer
+              Request access
             </Link>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="flex lg:hidden">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              type="button"
-              className="inline-flex items-center justify-center rounded-lg p-2.5 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200 focus:outline-none"
+            <Link 
+              to="/register?role=brand" 
+              className="btn-keychain-secondary text-base px-7 py-3 w-full sm:w-auto text-center"
             >
-              <span className="sr-only">Toggle main menu</span>
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+              Find a manufacturer
+            </Link>
           </div>
         </div>
 
-        {/* Mobile Navigation Dropdown */}
-        <div
-          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            mobileMenuOpen ? 'max-h-96 opacity-100 border-b border-slate-100' : 'max-h-0 opacity-0 pointer-events-none'
-          }`}
-        >
-          <div className="space-y-1.5 px-6 pb-6 pt-3 bg-white/95 backdrop-blur-lg">
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block rounded-lg px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200"
-              >
-                {item.label}
-              </a>
-            ))}
-            <div className="mt-6 flex flex-col gap-3 border-t border-slate-100 pt-4">
-              <Link
-                to="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center rounded-lg border border-slate-200 py-2.5 text-base font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
-              >
-                Log In
+        {/* 3. THREE PRODUCT PILLAR CARDS (Connect, Edge, OS - Exact Keychain Hero Layout) */}
+        <div id="connect" className="mx-auto max-w-7xl px-6 sm:px-8 mt-16 sm:mt-24">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            {/* Card 1: Fabricate Connect */}
+            <div className="keychain-card keychain-card-hover flex flex-col justify-between overflow-hidden p-6 sm:p-7">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-bold text-[#888888] uppercase tracking-wider mb-2">
+                  <div className="w-6 h-6 rounded-md bg-[#f4f4f2] border border-[#e8e8e5] flex items-center justify-center text-[#111111]">
+                    <Layers size={13} />
+                  </div>
+                  <span>Fabricate <strong className="text-[#111111]">Connect</strong></span>
+                </div>
+                <h3 className="text-base font-bold text-[#111111]">The largest global manufacturing network.</h3>
+
+                {/* Network Graphic Visualization */}
+                <div className="my-6 h-40 rounded-xl bg-[#fafaf9] border border-[#e8e8e5] flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-44 h-44 rounded-full border border-dashed border-[#e2e2de]" />
+                  </div>
+                  {/* Outer Nodes */}
+                  <div className="absolute top-4 left-6 w-8 h-8 rounded-lg bg-white border border-[#e8e8e5] flex items-center justify-center text-[#666666] shadow-2xs">
+                    <Store size={15} />
+                  </div>
+                  <div className="absolute bottom-4 left-8 w-8 h-8 rounded-lg bg-white border border-[#e8e8e5] flex items-center justify-center text-[#666666] shadow-2xs">
+                    <Box size={15} />
+                  </div>
+                  <div className="absolute top-4 right-6 w-8 h-8 rounded-lg bg-white border border-[#e8e8e5] flex items-center justify-center text-[#666666] shadow-2xs">
+                    <Cpu size={15} />
+                  </div>
+                  <div className="absolute bottom-4 right-8 w-8 h-8 rounded-lg bg-white border border-[#e8e8e5] flex items-center justify-center text-[#666666] shadow-2xs">
+                    <Truck size={15} />
+                  </div>
+
+                  {/* Central Yellow Node */}
+                  <div className="relative z-10 w-12 h-12 rounded-full bg-[#f5cb39] text-[#111111] font-black text-lg flex items-center justify-center shadow-sm">
+                    F
+                  </div>
+                </div>
+
+                <h4 className="text-sm font-bold text-[#111111] mb-1">Connect with brands.</h4>
+                <p className="text-xs text-[#666666] leading-relaxed">
+                  The largest network in CPG — 28,000+ brands and manufacturers, and the intelligence between them.
+                </p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-[#f0f0ed]">
+                <Link
+                  to="/register?role=brand"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#111111] hover:text-[#555555] transition-colors"
+                >
+                  <span>Explore Connect</span>
+                  <ArrowUpRight size={14} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 2: Fabricate Edge */}
+            <div className="keychain-card keychain-card-hover flex flex-col justify-between overflow-hidden p-6 sm:p-7">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-bold text-[#888888] uppercase tracking-wider mb-2">
+                  <div className="w-6 h-6 rounded-md bg-[#f4f4f2] border border-[#e8e8e5] flex items-center justify-center text-[#111111]">
+                    <Sliders size={13} />
+                  </div>
+                  <span>Fabricate <strong className="text-[#111111]">Edge</strong></span>
+                </div>
+                <h3 className="text-base font-bold text-[#111111]">The CRM Revenue Platform for CPG.</h3>
+
+                {/* Growth Chart Visualization */}
+                <div className="my-6 h-40 rounded-xl bg-[#fafaf9] border border-[#e8e8e5] p-4 flex flex-col justify-between relative overflow-hidden">
+                  <div className="flex items-center justify-between text-[11px] text-[#888888] font-bold">
+                    <span>RFQ Bids</span>
+                    <span className="text-emerald-700 font-extrabold">+42% Match Rate</span>
+                  </div>
+                  
+                  {/* Simulated SVG Wave */}
+                  <svg className="w-full h-16 text-[#f5cb39]" viewBox="0 0 100 40" fill="none">
+                    <path 
+                      d="M0 35 Q 25 30, 45 18 T 80 12 T 100 4" 
+                      stroke="#111111" 
+                      strokeWidth="2.5" 
+                      strokeLinecap="round" 
+                    />
+                    <path 
+                      d="M0 35 Q 25 30, 45 18 T 80 12 T 100 4 L 100 40 L 0 40 Z" 
+                      fill="url(#yellowGradient)" 
+                      opacity="0.25" 
+                    />
+                    <defs>
+                      <linearGradient id="yellowGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#f5cb39" />
+                        <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+
+                  <div className="flex items-center justify-between text-[10px] text-[#888888]">
+                    <span>Submission</span>
+                    <span>Tolerances Match</span>
+                    <span>Accepted</span>
+                  </div>
+                </div>
+
+                <h4 className="text-sm font-bold text-[#111111] mb-1">Grow your revenue.</h4>
+                <p className="text-xs text-[#666666] leading-relaxed">
+                  A CRM and revenue platform built for how CPG actually sells — from first touch to high-volume reorder.
+                </p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-[#f0f0ed]">
+                <Link
+                  to="/register?role=manufacturer"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#111111] hover:text-[#555555] transition-colors"
+                >
+                  <span>Explore Edge</span>
+                  <ArrowUpRight size={14} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 3: Fabricate OS */}
+            <div className="keychain-card keychain-card-hover flex flex-col justify-between overflow-hidden p-6 sm:p-7">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-bold text-[#888888] uppercase tracking-wider mb-2">
+                  <div className="w-6 h-6 rounded-md bg-[#f4f4f2] border border-[#e8e8e5] flex items-center justify-center text-[#111111]">
+                    <Activity size={13} />
+                  </div>
+                  <span>Fabricate <strong className="text-[#111111]">OS</strong></span>
+                </div>
+                <h3 className="text-base font-bold text-[#111111]">The AI-Powered ERP System.</h3>
+
+                {/* Operations Wheel Visualization */}
+                <div className="my-6 h-40 rounded-xl bg-[#fafaf9] border border-[#e8e8e5] flex items-center justify-center relative overflow-hidden">
+                  <div className="w-32 h-32 rounded-full border border-[#e2e2de] flex items-center justify-center relative">
+                    <div className="w-20 h-20 rounded-full border border-dashed border-[#e2e2de] flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-[#f5cb39] text-[#111111] font-black text-sm flex items-center justify-center shadow-xs">
+                        OS
+                      </div>
+                    </div>
+                    {/* Floating Badges */}
+                    <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-white border border-[#e8e8e5] text-[10px] font-bold px-2 py-0.5 rounded-full shadow-2xs whitespace-nowrap">
+                      Audits
+                    </span>
+                    <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-white border border-[#e8e8e5] text-[10px] font-bold px-2 py-0.5 rounded-full shadow-2xs whitespace-nowrap">
+                      QA Lines
+                    </span>
+                    <span className="absolute top-1/2 -translate-y-1/2 -left-4 -translate-x-1/2 bg-white border border-[#e8e8e5] text-[10px] font-bold px-2 py-0.5 rounded-full shadow-2xs whitespace-nowrap">
+                      Milestones
+                    </span>
+                  </div>
+                </div>
+
+                <h4 className="text-sm font-bold text-[#111111] mb-1">Run your operations.</h4>
+                <p className="text-xs text-[#666666] leading-relaxed">
+                  Food safety, inventory, purchasing, production, traceability — one connected system of record.
+                </p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-[#f0f0ed]">
+                <Link
+                  to="/register"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#111111] hover:text-[#555555] transition-colors"
+                >
+                  <span>Explore OS</span>
+                  <ArrowUpRight size={14} />
+                </Link>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 4. TRUST & LOGOS SECTION (Exact Keychain Layout with SOC2 Badge) */}
+      <section className="py-16 border-t border-b border-[#e8e8e5] bg-white/60">
+        <div className="mx-auto max-w-7xl px-6 sm:px-8 text-center">
+          
+          <p className="text-xs sm:text-sm font-medium text-[#666666]">
+            Trusted by over 28,000 CPG brands and manufacturers <br className="hidden sm:inline" />
+            From single-facility co-packers to national brands.
+          </p>
+
+          <div className="mt-5 mb-10 flex justify-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f4f4f2] border border-[#e8e8e5] text-xs font-bold text-[#111111]">
+              <span className="w-5 h-5 rounded-full bg-[#111111] text-white text-[9px] flex items-center justify-center font-black">
+                SOC
+              </span>
+              <span>SOC 2 compliant</span>
+            </div>
+          </div>
+
+          {/* Monochrome Brand Logos */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-7 items-center justify-items-center opacity-80 filter grayscale">
+            <span className="font-extrabold text-lg tracking-tight text-[#111111]">amazon</span>
+            <span className="font-bold text-base tracking-widest text-[#111111]">KRAFT</span>
+            <span className="font-extrabold text-lg italic text-[#111111]">feastables</span>
+            <span className="font-bold text-base tracking-widest text-[#111111]">FERRERO</span>
+            <span className="font-bold text-base tracking-wider text-[#111111]">MARS</span>
+            <span className="font-bold text-lg text-[#111111]">Target</span>
+            <span className="font-extrabold text-lg text-[#111111]">Walmart</span>
+            <span className="font-bold text-base tracking-wide text-[#111111]">NESTLÉ</span>
+            <span className="font-bold text-base tracking-wider text-[#111111]">UNILEVER</span>
+            <span className="font-bold text-base tracking-widest text-[#111111]">WHOLE FOODS</span>
+            <span className="font-bold text-base text-[#111111]">gopuff</span>
+            <span className="font-extrabold text-base tracking-widest text-[#111111]">LIDL</span>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 5. YELLOW MOCKUP WORKFLOW SECTION (Exact Signature Keychain Showcase) */}
+      <section id="features" className="py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-6 sm:px-8">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Left Content */}
+            <div className="lg:col-span-5 space-y-6">
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-[#111111] uppercase tracking-wider">
+                <div className="w-6 h-6 rounded-md bg-[#f4f4f2] border border-[#e8e8e5] flex items-center justify-center">
+                  <Layers size={13} />
+                </div>
+                <span>Fabricate Connect</span>
+              </div>
+
+              <h2 className="text-3xl sm:text-5xl font-extrabold text-[#111111] tracking-tight leading-[1.1]">
+                The largest network in CPG.
+              </h2>
+
+              <p className="text-sm sm:text-base text-[#666666] leading-relaxed">
+                Tens of thousands of brands and manufacturers, billions of data points on products, categories, and capabilities - the foundation everything else is built on.
+              </p>
+
+              <div className="pt-2 flex items-center gap-3">
+                <Link to="/register" className="btn-keychain-primary text-sm font-bold">
+                  Request access
+                </Link>
+                <Link to="/register?role=brand" className="btn-keychain-secondary text-sm font-bold flex items-center gap-1.5">
+                  <span>Explore</span>
+                  <ArrowUpRight size={14} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Right: Golden Yellow Background with Embedded Platform Console */}
+            <div className="lg:col-span-7 rounded-3xl bg-[#f5cb39] p-6 sm:p-10 shadow-lg relative overflow-hidden">
+              {/* Console Mockup Card */}
+              <div className="rounded-2xl bg-white border border-[#e8e8e5] shadow-xl p-5 space-y-4">
+                {/* Console Topbar */}
+                <div className="flex items-center justify-between pb-3 border-b border-[#f0f0ed]">
+                  <span className="font-logo font-black text-lg lowercase tracking-tight">fabricate</span>
+                  
+                  <div className="w-60 max-w-xs flex items-center gap-2 bg-[#f4f4f2] px-3 py-1.5 rounded-lg border border-[#e8e8e5] text-xs text-[#888888]">
+                    <Search size={13} />
+                    <span className="truncate">Search by product or manufacturer...</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#f5cb39] text-[#111111]">
+                      + Invite
+                    </span>
+                  </div>
+                </div>
+
+                <div className="text-xs font-bold text-[#111111]">
+                  152 verified manufacturers you could work with
+                </div>
+
+                {/* Sample Manufacturer Row 1 */}
+                <div className="p-3.5 rounded-xl border border-[#e8e8e5] hover:border-[#f5cb39] transition-colors space-y-2 bg-[#fafaf9]">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-white border border-[#e8e8e5] flex items-center justify-center font-bold text-xs">
+                        <Building2 size={16} className="text-[#111111]" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-[#111111]">Apex Precision Labs</h4>
+                        <span className="text-[10px] text-[#777777]">California, US • Accepting Projects</span>
+                      </div>
+                    </div>
+                    <span className="btn-keychain-primary text-[11px] px-3 py-1">
+                      Request quote
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    <span className="px-2 py-0.5 rounded bg-white border border-[#e8e8e5] text-[10px] font-semibold text-[#555555]">
+                      CNC Machining
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white border border-[#e8e8e5] text-[10px] font-semibold text-[#555555]">
+                      ISO9001
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white border border-[#e8e8e5] text-[10px] font-semibold text-[#555555]">
+                      MOQ: 100
+                    </span>
+                  </div>
+                </div>
+
+                {/* Sample Manufacturer Row 2 */}
+                <div className="p-3.5 rounded-xl border border-[#e8e8e5] hover:border-[#f5cb39] transition-colors space-y-2 bg-[#fafaf9]">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-white border border-[#e8e8e5] flex items-center justify-center font-bold text-xs">
+                        <Store size={16} className="text-[#111111]" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-[#111111]">Veritas Custom Co-Packers</h4>
+                        <span className="text-[10px] text-[#777777]">Chicago, IL • Accepting Projects</span>
+                      </div>
+                    </div>
+                    <span className="btn-keychain-primary text-[11px] px-3 py-1">
+                      Request quote
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    <span className="px-2 py-0.5 rounded bg-white border border-[#e8e8e5] text-[10px] font-semibold text-[#555555]">
+                      Beverage Canning
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white border border-[#e8e8e5] text-[10px] font-semibold text-[#555555]">
+                      FDA Registered
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white border border-[#e8e8e5] text-[10px] font-semibold text-[#555555]">
+                      Organic
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 6. CLEAN BOTTOM CTA (Keychain Style) */}
+      <section className="px-6 sm:px-8 pb-20">
+        <div className="mx-auto max-w-7xl rounded-3xl bg-[#111111] p-10 md:p-16 text-center text-white relative overflow-hidden">
+          <div className="relative z-10 max-w-2xl mx-auto space-y-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+              Ready to scale your production?
+            </h2>
+            <p className="text-sm sm:text-base text-[#999999] leading-relaxed">
+              Join thousands of brands and manufacturers finding production capacity and managing contracts on Fabricate.
+            </p>
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link to="/register?role=brand" className="btn-keychain-primary text-sm font-bold w-full sm:w-auto">
+                Find a Manufacturer
               </Link>
-              <Link
-                to="/register"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center rounded-lg bg-slate-900 py-2.5 text-base font-semibold text-white hover:bg-slate-800 transition-colors shadow-md"
+              <Link 
+                to="/register?role=manufacturer" 
+                className="w-full sm:w-auto inline-flex items-center justify-center bg-white/10 hover:bg-white/20 text-white font-bold border border-white/20 rounded-lg px-5 py-2.5 transition-colors text-sm"
               >
                 Join as Manufacturer
               </Link>
             </div>
           </div>
         </div>
-      </header>
-
-      {/* 2. HERO SECTION */}
-      <section className="relative pt-16 pb-20 md:pt-24 md:pb-32">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8 text-center flex flex-col items-center">
-          
-          {/* Trust Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-850 mb-6 select-none">
-            <ShieldCheck className="h-3.5 w-3.5 text-amber-600" />
-            <span>Fully Vetted B2B Manufacturing Marketplace</span>
-          </div>
-
-          {/* Headline */}
-          <h1 className="max-w-4xl text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl leading-tight">
-            Simplify your supply chain <br className="hidden sm:inline" />
-            with <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500">AI-Powered</span> CPG.
-          </h1>
-
-          {/* Subheadline */}
-          <p className="mt-6 max-w-2xl text-base text-slate-600 sm:text-lg md:text-xl leading-relaxed">
-            Create products, connect with suppliers, and manage your entire supply chain - all with the power of Fabricate.
-          </p>
-
-          {/* Interactive Search Bar (Taller like Keychain.com) */}
-          <form 
-            onSubmit={handleSearchSubmit}
-            className="mt-10 w-full max-w-3xl rounded-2xl bg-white border border-slate-200/80 p-3 shadow-2xl shadow-slate-200/60 focus-within:border-amber-500/50 focus-within:ring-2 focus-within:ring-amber-500/10 transition-all duration-300"
-          >
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-              <div className="flex-1 flex items-center gap-2 px-3">
-                <Search className="h-5 w-5 text-slate-400 shrink-0" />
-                <input
-                  type="text"
-                  placeholder="Describe your product... (e.g. Organic Energy Drink, Biodegradable Sacks)"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-transparent py-3 text-sm text-slate-950 placeholder:text-slate-400 focus:outline-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-200 px-6 py-3 text-sm font-bold active:scale-98 transition-all duration-150 shrink-0 flex items-center justify-center gap-1.5"
-              >
-                <Sparkles className="h-4 w-4 text-amber-600" />
-                <span>Generate Products</span>
-              </button>
-            </div>
-          </form>
-
-          {/* Quick Tags */}
-          <div className="mt-5 flex flex-wrap justify-center items-center gap-2.5 text-xs text-slate-400">
-            <span className="font-semibold text-slate-500">Popular:</span>
-            <button 
-              type="button" 
-              onClick={() => setSearchQuery('Food & Beverage')} 
-              className="px-3 py-1 rounded-md bg-slate-50 border border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900 transition-colors cursor-pointer"
-            >
-              Food & Beverage
-            </button>
-            <button 
-              type="button" 
-              onClick={() => setSearchQuery('Packaging')} 
-              className="px-3 py-1 rounded-md bg-slate-50 border border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900 transition-colors cursor-pointer"
-            >
-              Packaging
-            </button>
-            <button 
-              type="button" 
-              onClick={() => setSearchQuery('Cosmetics')} 
-              className="px-3 py-1 rounded-md bg-slate-50 border border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900 transition-colors cursor-pointer"
-            >
-              Cosmetics
-            </button>
-          </div>
-        </div>
       </section>
 
-      {/* 3. TRUST & STATISTICS SECTION */}
-      <section className="border-t border-b border-slate-100 bg-slate-50/50 py-12">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8">
-          
-          {/* Logo Banner */}
-          <div className="flex flex-col items-center justify-center gap-6">
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
-              Trusted by brands nationwide
+      {/* 7. CLEAN MINIMAL FOOTER */}
+      <footer className="border-t border-[#e8e8e5] bg-[#fbfbfa] py-12">
+        <div className="mx-auto max-w-7xl px-6 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-baseline gap-2">
+            <span className="font-bold text-xl lowercase tracking-tight text-[#111111]">
+              fabricate<span className="text-[#f5cb39]">.</span>
             </span>
-            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-60 filter grayscale">
-              <div className="h-6 flex items-center font-bold text-slate-800 tracking-widest text-sm">
-                <span className="text-amber-500 mr-1">◆</span> APEX SOURCE
-              </div>
-              <div className="h-6 flex items-center font-bold text-slate-800 tracking-widest text-sm">
-                <span className="text-blue-500 mr-1">▲</span> VELO GOODS
-              </div>
-              <div className="h-6 flex items-center font-bold text-slate-800 tracking-widest text-sm">
-                <span className="text-purple-500 mr-1">●</span> CORE LABS
-              </div>
-              <div className="h-6 flex items-center font-bold text-slate-800 tracking-widest text-sm">
-                <span className="text-rose-500 mr-1">■</span> MODERNA PACK
-              </div>
-              <div className="h-6 flex items-center font-bold text-slate-800 tracking-widest text-sm">
-                <span className="text-amber-500 mr-1">▼</span> NOVA FOODS
-              </div>
-            </div>
+            <span className="text-xs text-[#888880]">&copy; 2026 Fabricate Technologies Inc.</span>
           </div>
 
-          {/* Statistics Grid */}
-          <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-3 border-t border-slate-200/60 pt-12">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <dd className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-                  {stat.value}
-                </dd>
-                <dt className="mt-2.5 text-sm font-semibold text-slate-500">
-                  {stat.label}
-                </dt>
-              </div>
-            ))}
+          <div className="flex items-center gap-6 text-xs font-semibold text-[#555555]">
+            <Link to="/connect" className="hover:text-[#111111] transition-colors">Connect</Link>
+            <Link to="/edge" className="hover:text-[#111111] transition-colors">Edge</Link>
+            <Link to="/os" className="hover:text-[#111111] transition-colors">OS</Link>
+            <Link to="/login" className="hover:text-[#111111] transition-colors">Sign in</Link>
+            <Link to="/register" className="text-[#111111] font-bold hover:underline">Request access</Link>
           </div>
-
-        </div>
-      </section>
-
-      {/* 4. DUAL-AUDIENCE SPLIT */}
-      <section id="for-brands" className="py-20 md:py-28 scroll-mt-16">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8">
-          
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-              Engineered for both sides of the marketplace.
-            </h2>
-            <p className="mt-4 text-base text-slate-600">
-              We connect retail leaders with industrial capacity through verified data and streamlined matchmaking workflows.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            
-            {/* Left Column: For Brands */}
-            <div className="relative group rounded-2xl bg-white border border-slate-200 p-8 md:p-10 hover:border-amber-500/20 hover:shadow-xl hover:shadow-slate-100/65 transition-all duration-300 flex flex-col justify-between overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
-              <div>
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 border border-amber-100 text-amber-600 mb-6">
-                  <Building2 className="h-6 w-6" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900">For Brands & Retailers</h3>
-                <p className="mt-2 text-sm text-slate-500">
-                  Find, qualify, and secure the perfect production partner in a fraction of the time.
-                </p>
-                <ul className="mt-8 space-y-4">
-                  {brandFeatures.map((feat, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <div className="mt-0.5 rounded-full bg-amber-50 p-1 text-amber-600">
-                        <Check className="h-3.5 w-3.5" />
-                      </div>
-                      <div>
-                        <span className="font-semibold text-slate-800 block text-sm">{feat.title}</span>
-                        <span className="text-xs text-slate-500 mt-0.5 block">{feat.description}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-10 border-t border-slate-100 pt-6">
-                <Link 
-                  to="/register?role=brand" 
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-amber-600 hover:text-amber-705 group-hover:translate-x-0.5 transition-all duration-200"
-                >
-                  <span>Build your pipeline</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Right Column: For Manufacturers */}
-            <div id="for-manufacturers" className="relative group rounded-2xl bg-white border border-slate-200 p-8 md:p-10 hover:border-blue-500/20 hover:shadow-xl hover:shadow-slate-100/65 transition-all duration-300 flex flex-col justify-between overflow-hidden scroll-mt-16">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl pointer-events-none" />
-              <div>
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 border border-blue-100 text-blue-600 mb-6">
-                  <Factory className="h-6 w-6" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900">For Manufacturers & Co-packers</h3>
-                <p className="mt-2 text-sm text-slate-500">
-                  Qualify incoming request-for-quotes and stabilize your run schedules.
-                </p>
-                <ul className="mt-8 space-y-4">
-                  {manufacturerFeatures.map((feat, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <div className="mt-0.5 rounded-full bg-blue-50 p-1 text-blue-600">
-                        <Check className="h-3.5 w-3.5" />
-                      </div>
-                      <div>
-                        <span className="font-semibold text-slate-800 block text-sm">{feat.title}</span>
-                        <span className="text-xs text-slate-500 mt-0.5 block">{feat.description}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-10 border-t border-slate-100 pt-6">
-                <Link 
-                  to="/register?role=manufacturer" 
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 group-hover:translate-x-0.5 transition-all duration-200"
-                >
-                  <span>List your facility</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* 5. HOW IT WORKS */}
-      <section id="how-it-works" className="border-t border-slate-100 bg-slate-50/50 py-20 md:py-28 scroll-mt-16">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8">
-          
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-widest text-amber-600">Workflow</span>
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl mt-2.5">
-              Sourcing made straightforward.
-            </h2>
-            <p className="mt-4 text-base text-slate-600">
-              Skip weeks of searching and cold calls. Our system connects your specifications directly to capable facilities.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-            
-            {/* Connective Line */}
-            <div className="hidden md:block absolute top-1/4 left-[20%] right-[20%] h-px bg-slate-200 -z-10" />
-
-            {steps.map((step, index) => (
-              <div key={index} className="relative rounded-2xl bg-white border border-slate-200/80 p-8 flex flex-col justify-between shadow-sm hover:border-slate-350 transition-all duration-200">
-                <div>
-                  <span className="text-4xl font-black text-slate-100 tracking-tight block mb-6">{step.number}</span>
-                  <h3 className="text-lg font-bold text-slate-900">{step.title}</h3>
-                  <p className="mt-2.5 text-sm text-slate-500 leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-
-          </div>
-        </div>
-      </section>
-
-      {/* 6. FEATURED CATEGORIES GRID */}
-      <section id="categories" className="py-20 md:py-28 border-t border-slate-100 scroll-mt-16">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8">
-          
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-widest text-amber-600">Capabilities</span>
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl mt-2.5">
-              Browse top manufacturing capabilities.
-            </h2>
-            <p className="mt-4 text-base text-slate-600">
-              From regulated dietary supplements to precision electronics assembly, find certified industrial partners.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map((cat, index) => {
-              const Icon = cat.icon;
-              return (
-                <div 
-                  key={index}
-                  className="group relative rounded-2xl bg-white border border-slate-200/80 p-6 hover:border-slate-300 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-10 h-10 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-amber-600 group-hover:border-amber-500/20 group-hover:bg-amber-50 transition-all duration-350 mb-6">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <h3 className="text-base font-bold text-slate-900">{cat.title}</h3>
-                    <p className="mt-2 text-xs text-slate-500 leading-relaxed leading-5">
-                      {cat.description}
-                    </p>
-                  </div>
-                  <div className="mt-6 flex items-center justify-between text-xs font-semibold text-slate-400 group-hover:text-amber-600 transition-colors">
-                    <span>Explore facilities</span>
-                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-205" />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-        </div>
-      </section>
-
-      {/* 7. BOTTOM CALL TO ACTION (CTA) */}
-      <section className="px-6 sm:px-8 pb-20">
-        <div className="mx-auto max-w-7xl rounded-3xl bg-slate-900 p-8 md:p-16 text-center relative overflow-hidden shadow-xl shadow-slate-900/10">
-          <div className="absolute -bottom-48 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-amber-500/10 blur-[80px] pointer-events-none" />
-          
-          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl leading-tight">
-            Ready to scale your production?
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-sm md:text-base text-slate-400 leading-relaxed">
-            Create a free account to start searching our manufacturer directory or list your facility today.
-          </p>
-
-          <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
-            <Link
-              to="/register?role=brand"
-              className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-100 active:scale-98 transition-all duration-150"
-            >
-              Find a Manufacturer
-            </Link>
-            <Link
-              to="/register?role=manufacturer"
-              className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl border border-slate-800 hover:border-slate-700 bg-slate-950/40 hover:bg-slate-950 px-6 py-3 text-sm font-semibold text-white active:scale-98 transition-all duration-150"
-            >
-              Claim Manufacturer Profile
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. FOOTER */}
-      <footer className="border-t border-slate-200/80 bg-slate-50 pt-16 pb-8">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8">
-          
-          {/* 4-Column Layout */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">Company</h4>
-              <ul className="mt-4 space-y-2">
-                <li><a href="#about" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">About Us</a></li>
-                <li><a href="#careers" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">Careers</a></li>
-                <li><a href="#news" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">Newsroom</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">Solutions</h4>
-              <ul className="mt-4 space-y-2">
-                <li><a href="#for-brands" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">For Brands</a></li>
-                <li><a href="#for-manufacturers" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">For Manufacturers</a></li>
-                <li><a href="#enterprise" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">Enterprise</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">Resources</h4>
-              <ul className="mt-4 space-y-2">
-                <li><a href="#directory" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">Directory</a></li>
-                <li><a href="#guides" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">Sourcing Guides</a></li>
-                <li><a href="#help" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">Help Center</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">Legal</h4>
-              <ul className="mt-4 space-y-2">
-                <li><a href="#privacy" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">Privacy Policy</a></li>
-                <li><a href="#terms" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">Terms of Service</a></li>
-                <li><a href="#security" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">Security</a></li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom Footer Credits */}
-          <div className="mt-16 border-t border-slate-200/60 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-md bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
-                <Layers className="h-3 w-3" />
-              </div>
-              <span className="font-logo text-lg font-bold lowercase text-slate-900 tracking-logo-tight">
-                fabricate<sup className="text-[8px] text-amber-500 font-semibold ml-0.5">®</sup>
-              </span>
-            </div>
-            <p className="text-xs text-slate-400">
-              &copy; 2026 Fabricate. All rights reserved.
-            </p>
-          </div>
-
         </div>
       </footer>
 

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,33 +6,54 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 font-sans antialiased selection:bg-amber-500 selection:text-slate-950;
+    @apply bg-[#fbfbfa] text-[#111111] font-sans antialiased selection:bg-[#f5cb39] selection:text-[#111111];
   }
 }
 
-/* Custom light scrollbars */
+/* Custom subtle scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-100;
+  background: #fbfbfa;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
+  background: #e2e2de;
+  border-radius: 9999px;
 }
 
-/* Modern light mode panel & card utility classes */
-.glass-panel {
-  @apply bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-sm;
+::-webkit-scrollbar-thumb:hover {
+  background: #c8c8c2;
 }
 
-.glass-card {
-  @apply bg-white border border-slate-200/80 rounded-2xl hover:border-amber-500/40 hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300;
+/* Keychain exact design system utilities */
+.keychain-card {
+  @apply bg-white border border-[#e8e8e5] rounded-2xl transition-all duration-300;
+}
+
+.keychain-card-hover {
+  @apply hover:border-[#d0d0ca] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)];
+}
+
+.btn-keychain-primary {
+  @apply inline-flex items-center justify-center bg-[#f5cb39] hover:bg-[#ebd034] text-[#111111] font-medium rounded-lg px-5 py-2.5 shadow-sm active:scale-[0.98] transition-all duration-150 select-none;
+}
+
+.btn-keychain-secondary {
+  @apply inline-flex items-center justify-center bg-white hover:bg-[#f6f6f3] text-[#111111] font-medium border border-[#e5e5e2] rounded-lg px-5 py-2.5 shadow-sm active:scale-[0.98] transition-all duration-150 select-none;
 }
 
 .glass-input {
-  @apply bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all duration-200;
+  @apply bg-white border border-[#e8e8e5] rounded-lg text-[#111111] placeholder:text-[#999994] focus:outline-none focus:border-[#f5cb39] focus:ring-2 focus:ring-[#f5cb39]/20 transition-all duration-200;
+}
+
+/* Faint constellation network background */
+.keychain-network-bg {
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(245, 203, 57, 0.04) 0%, transparent 60%),
+    radial-gradient(#e5e5e0 1px, transparent 1px);
+  background-size: 100% 100%, 36px 36px;
 }
